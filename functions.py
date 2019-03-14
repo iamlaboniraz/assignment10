@@ -58,7 +58,7 @@ def misclassified(List_of_data=None):
 
     return x
 if __name__=='__main__':
-    List_of_data=readAllData('complete_data.txt')
+    List_of_data=readAllData('short_data.txt')
     #print(List_of_data)
     average_value = computeAverageForClasses(List_of_data)
     #print(average_value)
