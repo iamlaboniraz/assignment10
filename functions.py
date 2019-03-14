@@ -8,54 +8,64 @@ def readAllData(List_of_data):
                 result.append(tuple(i.split()))
     return result
 def computeAverageForClasses(List_of_data=None):
-    x={}
-    data_for_yes=0
-    data_for_no=0
-    data_for_ok=0
-    
-    count_number_for_yes=0
-    count_number_for_no=0
-    count_number_for_ok=0
-    
+    find_all_yes_no=[]
+    find_yes_no=[]
+    avg={}
     for i in List_of_data:
-        if i[1]=='YES':
-            data_for_yes=data_for_yes+float(i[0])
-            count_number_for_yes=count_number_for_yes+1
-            average_for_yes=(data_for_yes/count_number_for_yes)
-            x[i[1]]=average_for_yes
-        if i[1]=='NO':
-            data_for_no = data_for_no+float(i[0])
-            count_number_for_no = count_number_for_no+1
-            average_for_no=(data_for_no/count_number_for_no)
-            x[i[1]]=average_for_no
-        if i[1]=='OK':
-            data_for_ok = data_for_ok+float(i[0])
-            count_number_for_ok = count_number_for_ok+1
-            average_for_ok=(data_for_ok/count_number_for_ok)
-            x[i[1]]=average_for_ok
-    return x
+        find_all_yes_no.append(i[1])
+    #print(find_all_yes_no)
+    for i in range(len(find_all_yes_no)):
+        for j in range(len(find_all_yes_no)):
+            if find_all_yes_no[i]==find_all_yes_no[j]:
+                if find_all_yes_no[j] not in find_yes_no:
+                    find_yes_no.append(find_all_yes_no[j])
+    #print(find_yes_no)
+    number_yes_no=list(i*0 for i in range(0,len(find_yes_no)))
+    total_number=list(i*0 for i in range(0,len(find_yes_no)))
+    #print(number_yes_no,total_number)
+    for i in List_of_data:
+        for j in range(0,len(find_yes_no)):
+            if i[1]==find_yes_no[j]:
+                number_yes_no[j]+=float(i[0])
+                total_number[j]+=1
+    #print(number_yes_no,total_number)
+    for i in range(0,len(find_yes_no)):
+        avg[find_yes_no[i]]=number_yes_no[i]/total_number[i]
+        #print(avg)
+    return avg
 def misclassified(List_of_data=None):
     x=[]
     a=[]
+    y=[]
     average_value=computeAverageForClasses(List_of_data)
-    for i in List_of_data:
-        if i[1]=='YES':
-            if average_value is not None and abs(float(i[0])-float(average_value['YES']))>abs(float(i[0])-float(average_value['NO'])):
-                a.append(i)
-        if i[1]=='NO':
-            if average_value is not None and abs(float(i[0])-float(average_value['NO']))>abs(float(i[0])-float(average_value['YES'])):
-                a.append(i)
-        if i[1]=='OK':
-            if average_value is not None and abs(float(i[0])-float(average_value['OK']))>abs(float(i[0])-float(average_value['NO'])):
-                if average_value is not None and abs(float(i[0])-float(average_value['OK']))>abs(float(i[0])-float(average_value['YES'])):
-                    a.append(i)        
-    return a
+    for i in average_value:
+        a.append(average_value[i])
+        y.append(i)
+    #print(y)
+    length=len(a)-1
+    #print(length)
+    for i in range(0,len(a)-1):
+        #print(i)
+        for j in List_of_data:
+            if j[1]==y[i]:
+                if abs(float(j[0])-float(a[i]))>abs(float(j[0])-float(a[i+1])):
+                    x.append(j)
+                    
+            if j[1]==y[i+1]:
+                if abs(float(j[0])-float(a[i+1]))>abs(float(j[0])-float(a[i])):
+                    x.append(j)
+                    
+
+    return x
 if __name__=='__main__':
-    List_of_data=readAllData('short_data.txt')
+    List_of_data=readAllData('complete_data.txt')
     #print(List_of_data)
     average_value = computeAverageForClasses(List_of_data)
     #print(average_value)
     misclass=misclassified(List_of_data)
     print(misclass)       
+
+
+
 
 
