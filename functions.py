@@ -21,7 +21,7 @@ def computeAverageForClasses(List_of_data=None):
                     find_yes_no.append(find_all_yes_no[j])
     #print(find_yes_no)
     number_yes_no=list(i*0 for i in range(0,len(find_yes_no)))
-    total_number=list(i*0 for i in range(0,len(find_yes_no)))
+    total_number=list(j*0 for j in range(0,len(find_yes_no)))
     #print(number_yes_no,total_number)
     for i in List_of_data:
         for j in range(0,len(find_yes_no)):
@@ -64,6 +64,7 @@ if __name__=='__main__':
     #print(average_value)
     misclass=misclassified(List_of_data)
     print(misclass)       
+
 
 
 
